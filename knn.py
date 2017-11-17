@@ -90,7 +90,7 @@ def main():
 	predictions = []
 	kFoldPercent = 0.90
 	totalAccuracy = 0.0
-	totalTests = 10
+	totalTests = 50
 	k = 7
 	
 

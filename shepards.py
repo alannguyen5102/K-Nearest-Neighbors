@@ -59,6 +59,7 @@ def distance(neighborset,testset):
     dist = 1
     for x in range(len(neighborset)-1):
         dist += abs(neighborset[x] - testset[x])
+        dist = pow(dist, 2)
     #print (dist)    
     return 1/dist
 
@@ -101,61 +102,58 @@ def main():
 	kFoldPercent = 0.80
 	totalAccuracy = 0.0
 	totalTests = 50
-	k = 7
 	
 
-	#Tests a range of different neighbors
-	for k in range(1, 11):
-		print(repr(k) + ' nearest neighbors')
+#Tests a range of different neighbors
+	print('all nearest neighbors')
 
 
-		#Does totalTests number of tests for an averge
-		for x in range(0, totalTests):
+	#Does totalTests number of tests for an averge
+	for x in range(0, totalTests):
 
-			#trains and tests with a new fold in data everytime for good measures
-			train(sys.argv[1], kFoldPercent, training, testing)
+		#trains and tests with a new fold in data everytime for good measures
+		train(sys.argv[1], kFoldPercent, training, testing)
+		k = len(testing)	
+		#for each data in testing, classify it and measure accuracy
+		for i in range(len(testing)):
+			result = classify(training, testing[i], k)
+			predictions.append(result)
+		accuracy = calculateAccuracy(predictions, testing)
+		totalAccuracy += accuracy
 
-			#for each data in testing, classify it and measure accuracy
-			for i in range(len(testing)):
-				result = classify(training, testing[i], k)
-				predictions.append(result)
-			accuracy = calculateAccuracy(predictions, testing)
-			totalAccuracy += accuracy
 
+		#resets the data for another fold
+		del result
+		del predictions[:]
+		del training[:]
+		del testing[:]
 
-			#resets the data for another fold
-			del result
-			del predictions[:]
-			del training[:]
-			del testing[:]
+		accuracy = 0
+	totalAccuracy = totalAccuracy / totalTests
+	print('Testing Accuracy: ' + repr(totalAccuracy) + '%')
 
-			accuracy = 0
-		totalAccuracy = totalAccuracy / totalTests
-		print('Testing Accuracy: ' + repr(totalAccuracy) + '%')
+	totalAccuracy = 0
 
-		totalAccuracy = 0
+	#Does totalTests number of tests for an averge
+	for x in range(0, totalTests):
 
-		#Does totalTests number of tests for an averge
-		for x in range(0, totalTests):
+		train(sys.argv[1], kFoldPercent, training, testing)
+		k = len(training)
+		for i in range(len(training)):
+			#only use the training data
+			result = classify(training, training[i], k)
+			predictions.append(result)
+		accuracy = calculateAccuracy(predictions, training)
+		totalAccuracy += accuracy
 
-			train(sys.argv[1], kFoldPercent, training, testing)
+		del result
+		del predictions[:]
+		del training[:]
+		del testing[:]
 
-			for i in range(len(training)):
-				#only use the training data
-				result = classify(training, training[i], k)
-				predictions.append(result)
-			accuracy = calculateAccuracy(predictions, training)
-			totalAccuracy += accuracy
+		accuracy = 0
+	totalAccuracy = totalAccuracy / totalTests
+	print('Training Accuracy: ' + repr(totalAccuracy) + '%\n')
 
-			del result
-			del predictions[:]
-			del training[:]
-			del testing[:]
-
-			accuracy = 0
-		totalAccuracy = totalAccuracy / totalTests
-		print('Training Accuracy: ' + repr(totalAccuracy) + '%\n')
-
-		totalAccuracy = 0
-
+	totalAccuracy = 0
 main()
