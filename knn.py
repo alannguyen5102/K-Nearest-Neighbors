@@ -88,7 +88,7 @@ def main():
 	training = []
 	testing = []
 	predictions = []
-	kFoldPercent = 0.90
+	kFoldPercent = 0.80
 	totalAccuracy = 0.0
 	totalTests = 50
 	k = 7

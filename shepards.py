@@ -59,7 +59,6 @@ def distance(neighborset,testset):
     dist = 1
     for x in range(len(neighborset)-1):
         dist += abs(neighborset[x] - testset[x])
-        dist = pow(dist, 2)
     #print (dist)    
     return 1/dist
 
