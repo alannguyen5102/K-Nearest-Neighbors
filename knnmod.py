@@ -3,7 +3,6 @@ import math
 import operator
 import csv
 import sys
-import pandas as pd 
 from collections import Counter
 
 #Unweighted K N N
@@ -86,15 +85,18 @@ def classify(testedSet, point, k):
 
 def main():
 	training = []
+
+
 	testing = []
 	predictions = []
 	kFoldPercent = 0.80
 	totalAccuracy = 0.0
-	totalTests = 50
+	totalTests = 1
+	k = 7
 	
 
 	#Tests a range of different neighbors
-	for k in range(1, 11):
+	for k in range(7, 8):
 		print(repr(k) + ' nearest neighbors')
 
 
@@ -108,6 +110,11 @@ def main():
 			for i in range(len(testing)):
 				result = classify(training, testing[i], k)
 				predictions.append(result)
+				if (repr(result) != repr(testing[i][-1])):
+					wrong = "wrong"
+				else:
+					wrong = "right"
+				print(wrong + '> predicted=' + repr(result) + ', actual=' + repr(testing[i][-1]))
 			accuracy = calculateAccuracy(predictions, testing)
 			totalAccuracy += accuracy
 
@@ -133,6 +140,11 @@ def main():
 				#only use the training data
 				result = classify(training, training[i], k)
 				predictions.append(result)
+				if (repr(result) != repr(training[i][-1])):
+					wrong = "wrong"
+				else:
+					wrong = "right"
+				print(wrong + '> predicted=' + repr(result) + ', actual=' + repr(training[i][-1]))
 			accuracy = calculateAccuracy(predictions, training)
 			totalAccuracy += accuracy
 

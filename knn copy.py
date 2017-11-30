@@ -91,6 +91,7 @@ def main():
 	kFoldPercent = 0.80
 	totalAccuracy = 0.0
 	totalTests = 50
+	k = 7
 	
 
 	#Tests a range of different neighbors
@@ -108,6 +109,8 @@ def main():
 			for i in range(len(testing)):
 				result = classify(training, testing[i], k)
 				predictions.append(result)
+
+				print(wrong + '> predicted=' + repr(result) + ', actual=' + repr(testing[x][-1]))
 			accuracy = calculateAccuracy(predictions, testing)
 			totalAccuracy += accuracy
 
@@ -133,6 +136,7 @@ def main():
 				#only use the training data
 				result = classify(training, training[i], k)
 				predictions.append(result)
+				print(wrong + '> predicted=' + repr(result) + ', actual=' + repr(testing[x][-1]))
 			accuracy = calculateAccuracy(predictions, training)
 			totalAccuracy += accuracy
 
